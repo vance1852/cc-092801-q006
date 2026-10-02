@@ -7,6 +7,7 @@
 - src/portfolio_ops/：研发中心、尽调通道、研究资源、交接计划和商业情景；
 - src/discovery_lab/：研究协议、实验记录、异常排除、分析任务租约和候选结论；
 - src/licensing_ops/：管线信息、交易风险告警、跟进工单和资源分配；
+- src/milestone_ops/：转化里程碑、签署规则版本、结果证据、双签决定、分期拨付与争议冻结；
 - fixtures/：离线验收使用的研究协议与结构化实验记录；
 - tests/：领域规则、事务边界、权限、HTTP API 和命令行验收测试。
 
@@ -34,9 +35,10 @@ python3 -m compileall -q src tests
 PYTHONPATH=src python3 -m portfolio_ops.acceptance --workspace .
 PYTHONPATH=src python3 -m discovery_lab.acceptance --workspace .
 PYTHONPATH=src python3 -m licensing_ops.acceptance
+PYTHONPATH=src python3 -m milestone_ops.acceptance --workspace .
 ~~~
 
-三条命令会在临时 SQLite 数据库中完成研发中心与交接通道登记、研究资源分配、候选药证据分析及交易风险处置，不访问外部网络。
+四条命令会在临时 SQLite 数据库中完成研发中心与交接通道登记、研究资源分配、候选药证据分析、交易风险处置，以及转化里程碑签署、双签决定、分期拨付、争议冻结与重启恢复，不访问外部网络。
 
 ## HTTP 服务
 
@@ -44,6 +46,7 @@ PYTHONPATH=src python3 -m licensing_ops.acceptance
 PYTHONPATH=src python3 -m portfolio_ops.api --database portfolio.sqlite3 --host 127.0.0.1 --port 8080
 PYTHONPATH=src python3 -m discovery_lab.api --database discovery.sqlite3 --host 127.0.0.1 --port 8081
 PYTHONPATH=src python3 -m licensing_ops.api --database licensing.sqlite3 --host 127.0.0.1 --port 8082
+PYTHONPATH=src python3 -m milestone_ops.api --database milestone.sqlite3 --host 127.0.0.1 --port 8083
 ~~~
 
 服务提供浏览器无关的 JSON 接口和健康检查。进程重启后可以继续读取 SQLite 中的业务状态与审计历史。
